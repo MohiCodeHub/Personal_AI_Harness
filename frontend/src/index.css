@@ -1,0 +1,349 @@
+:root {
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text',
+    'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* Light (default) */
+  --bg: #ffffff;
+  --bg-elevated: rgba(255, 255, 255, 0.72);
+  --surface: #f5f5f7;
+  --text: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --hairline: rgba(0, 0, 0, 0.1);
+  --accent: #0071e3;
+  --accent-text: #ffffff;
+  --assistant-bubble: #e9e9eb;
+  --assistant-text: #1d1d1f;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 8px 28px rgba(0, 0, 0, 0.06);
+  --warn: #ff9f0a;
+}
+
+[data-theme='dark'] {
+  --bg: #000000;
+  --bg-elevated: rgba(0, 0, 0, 0.7);
+  --surface: #1c1c1e;
+  --text: #f5f5f7;
+  --text-secondary: #98989d;
+  --hairline: rgba(255, 255, 255, 0.12);
+  --accent: #0a84ff;
+  --accent-text: #ffffff;
+  --assistant-bubble: #2c2c2e;
+  --assistant-text: #f5f5f7;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 8px 28px rgba(0, 0, 0, 0.5);
+  --warn: #ff9f0a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ---------- Header ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 22px;
+  /* Seamless at the top — blends into the page background */
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease,
+    backdrop-filter 0.3s ease;
+}
+
+/* Materialize as a subtle frosted bar only once content scrolls under it */
+.header.scrolled {
+  background: var(--bg-elevated);
+  border-bottom-color: var(--hairline);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.mark {
+  color: var(--accent);
+  font-size: 13px;
+  transform: translateY(-0.5px);
+}
+
+.title {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.model {
+  margin-left: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: transparent;
+  border: 1px solid var(--hairline);
+}
+
+.dot-warn {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--warn);
+  margin-left: 4px;
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--surface);
+}
+
+.theme-toggle:active {
+  transform: scale(0.92);
+}
+
+/* ---------- Messages ---------- */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.messages-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 22px 12px;
+  min-height: 100%;
+}
+
+.welcome {
+  margin: auto;
+  text-align: center;
+  padding: 40px 0;
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.welcome h1 {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0 0 10px;
+}
+
+.welcome p {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.row {
+  display: flex;
+  animation: rise 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.row.user {
+  justify-content: flex-end;
+}
+
+.row.assistant {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 11px 16px;
+  border-radius: 20px;
+  font-size: 16px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.row.user .bubble {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-bottom-right-radius: 7px;
+}
+
+.row.assistant .bubble {
+  background: var(--assistant-bubble);
+  color: var(--assistant-text);
+  border-bottom-left-radius: 7px;
+}
+
+/* typing indicator */
+.bubble.typing {
+  display: inline-flex;
+  gap: 5px;
+  padding: 15px 18px;
+}
+
+.bubble.typing span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  opacity: 0.5;
+  animation: blink 1.3s infinite ease-in-out both;
+}
+
+.bubble.typing span:nth-child(2) {
+  animation-delay: 0.18s;
+}
+.bubble.typing span:nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.error {
+  align-self: center;
+  margin-top: 8px;
+  font-size: 14px;
+  color: #ff453a;
+  background: rgba(255, 69, 58, 0.12);
+  padding: 9px 14px;
+  border-radius: 12px;
+}
+
+/* ---------- Composer ---------- */
+.composer {
+  position: sticky;
+  bottom: 0;
+  padding: 12px 22px 22px;
+  background: linear-gradient(to top, var(--bg) 60%, transparent);
+}
+
+.composer-inner {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 24px;
+  padding: 6px 6px 6px 18px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.2s ease;
+}
+
+.composer-inner:focus-within {
+  border-color: var(--accent);
+}
+
+.composer textarea {
+  flex: 1;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.4;
+  padding: 8px 0;
+  max-height: 200px;
+}
+
+.composer textarea::placeholder {
+  color: var(--text-secondary);
+}
+
+.send {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease;
+}
+
+.send:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.send:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.send:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* ---------- Animations ---------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
